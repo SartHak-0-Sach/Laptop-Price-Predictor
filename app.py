@@ -1,63 +1,85 @@
 import streamlit as st
-import pandas as pd
+import pickle
 import numpy as np
 
-pipe = pd.read_pickle("pipe.pkl")
-df = pd.read_pickle("df.pkl")
+pipe = pickle.load(open('model/pipe_object.pkl', 'rb'))
+df = pickle.load(open('model/laptop_data.pkl', 'rb'))
+st.title('Laptop Price Prediction')
 
-st.title("Laptop Price Predictor")
+# Creating two column layout
+left_column, right_column = st.columns(2)
 
-# brand
-company = st.selectbox("Brand", df["Company"].unique())
-type = st.selectbox("Type", df["TypeName"].unique())
-ram = st.selectbox("RAM (in GB)", [2, 4, 8, 12, 16, 32, 64])
-weight = st.number_input("Weight of the Laptop")
-touchscreen = st.selectbox("Touchscreen", ["Yes", "No"])
-ips = st.selectbox("Ips", ["Yes", "No"])
-screen_size = st.number_input("Screen Size")
-resolution = st.selectbox(
-    "Screen Resolution",
-    [
-        "1920x1080",
-        "1366x768",
-        "1600x900",
-        "3840x2160",
-        "3200x1800",
-        "2880x1800",
-        "2560x1600",
-        "2560x1440",
-        "2304x1440",
-    ],
-)
+# Left Column
+with left_column:
+    st.subheader("Basic Laptop Info")
+    # Company Brand
+    company = st.selectbox('Brand', df['Company'].unique())
 
-#cpu
-cpu = st.selectbox('CPU',df['Cpu brand'].unique())
+    # Laptop Type
+    type = st.selectbox('Type', df['TypeName'].unique())
 
-hdd = st.selectbox('HDD(in GB)',[0,128,256,512,1024,2048])
+    # RAM
+    ram = st.selectbox('RAM(in GB)', [4, 6, 8, 12, 16, 24, 32, 64], index=2)
 
-ssd = st.selectbox('SSD(in GB)',[0,8,128,256,512,1024])
+    # Weight
+    weight = st.number_input('Weight of the Laptop(in Kg)', min_value=1.0, max_value=2.8, value=1.8, step=0.1)
 
-gpu = st.selectbox('GPU',df['Gpu brand'].unique())
+# Right Column
+with right_column:
+    st.subheader("Advanced Laptop Info")
+    
+    # Create a two-column layout
+    left_advanced, right_advanced = st.columns(2)
+    
+    with left_advanced:
+        # TouchScreen
+        touchscreen = st.selectbox('TouchScreen', ['No', 'Yes'])
 
-os = st.selectbox('OS',df['os'].unique())
+        # Display
+        ips = st.selectbox('IPS', ['Yes', 'No'])
+
+        # Screen Size
+        screen_size = st.selectbox('Screen Size (in Inch)', [13.3, 15.6, 17.3])
+
+        # Resolution
+        resolution = st.selectbox('Screen Resolution', ['1920 x 1080', '1366 x 768', '1600 x 900',
+                                                        '3840 x 2160', '3200 x 1800', '2880 x 1800',
+                                                        '2560 x 1600', '2560 x 1440', '2304 x 1440'])
+                
+        # OS
+        os = st.selectbox('OS', df['os'].unique())
+
+    with right_advanced:
+        # CPU
+        cpu = st.selectbox('CPU', df['Cpu Brand'].unique())
+
+        # GPU
+        gpu = st.selectbox('GPU', df['GpuBrand'].unique())
+
+        # HDD
+        hdd = st.selectbox('HDD(in GB)', [0, 256, 512, 1024, 2048])
+
+        # SSD
+        ssd = st.selectbox('SSD(in GB)', [0, 128, 256, 512, 1024])
 
 if st.button('Predict Price'):
-    # query
-    ppi = None
-    if touchscreen == 'Yes':
-        touchscreen = 1
-    else:
-        touchscreen = 0
+    # Preprocess input features
+    touchscreen = int(touchscreen == 'Yes')
+    ips = int(ips == 'Yes')
+    X_res, Y_res = map(int, resolution.split('x'))
+    ppi = ((X_res**2 + Y_res**2)**0.5) / screen_size
 
-    if ips == 'Yes':
-        ips = 1
-    else:
-        ips = 0
+    # Create query array and make the prediction
+    query = np.array([company, type, ram, weight, touchscreen, ips, ppi, cpu, hdd, ssd, gpu, os]).reshape(1, -1)
+    predicted_price = int(np.exp(pipe.predict(query)[0]))
 
-    X_res = int(resolution.split('x')[0])
-    Y_res = int(resolution.split('x')[1])
-    ppi = ((X_res**2) + (Y_res**2))**0.5/screen_size
-    query = np.array([company,type,ram,weight,touchscreen,ips,ppi,cpu,hdd,ssd,gpu,os])
+    # Display the result
+    st.title(f"\nPrice: {round(predicted_price * 0.012, 2)} USD")
 
-    query = query.reshape(1,12)
-    st.title("The predicted price of this configuration is " + str(int(np.exp(pipe.predict(query)[0]))))
+# Note
+st.write("""
+<span style="color:green">Please note the dataset was collected from Amazon in 2017-18.<br>
+Furthermore, only 1301 samples were collected, so the price may be inaccurate.</span>
+""", unsafe_allow_html=True)
+
+
