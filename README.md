@@ -1,82 +1,123 @@
-# Laptop-Price-Prediction
-A collection of machine learning models for predicting laptop prices
+# 💻 Laptop Price Predictor  
 
-![Laptop-Price-Prediction](assets/demo.png)
+![Laptop Price Predictor](assets/demo.png)  
 
-<details>
-<summary style="font-size: 20px;">Dependencies</summary>
-To install the required Python packages you can use the following command:
+Welcome to the **Laptop Price Predictor**! 🎉  
+This project combines **machine learning models** with **intuitive user interfaces** to predict laptop prices based on specifications and features.
 
-```bash
-pip install -r requirements.txt
-```
-</details>
+## 📋 Table of Contents  
 
-<details>
-<summary style="font-size: 20px;">Datasets Reference</summary>
-The dataset is about laptops configuration with prices containing 1302 laptops data with 12 columns Company name,type namee, laptop size in (inches), Screen resolution, CPU, RAM, Memory, GP, Operating system, Price in INR. The dataset was collected from Amazon in 2017-18.
-</details>
+1. [📄 Description](#-description)  
+2. [✨ Features](#-features)  
+3. [📊 Dataset Details](#-dataset-details)  
+4. [🤖 Regressor Models](#-regressor-models)  
+5. [🌟 Selected Models](#-selected-models)  
+6. [💵 Price Currency Conversion](#-price-currency-conversion)  
+7. [🖥️ Running the Application](#-running-the-application)  
+8. [📈 Metrics](#-metrics)  
+9. [💡 Future Enhancements](#-future-enhancements)  
+10. [🌟 Contribution](#-contribution)  
 
-<details>
-<summary style="font-size: 20px;">Regressor Model Choices</summary>
+## 📄 Description  
 
-- Multiple Linear Regression
-- Ridge Regression
-- Lasso Regression
-- k-Nearest Neighbors (k-NN)
-- Decision Tree
-- Support Vector Machine (SVM)
-- Random Forest
-- ExtraTrees
-- Adaptive Boost (AdaBoost)
-- Gradient
-- Extreme Gradient Boost (XGBoost)
-- Voting
-- Stacking
-- Random Forest Regressor Model - Personal Customization
-- Voting Regressor Model (Rf+Gradient) - Personal Customization
-</details>
+The **Laptop Price Predictor** uses various **regression models** to predict laptop prices based on their specifications. Designed to support **data enthusiasts and tech shoppers**, this tool is powered by Python and machine learning libraries.  
 
-<details>
-<summary style="font-size: 20px;">Selected Regression Model</summary>
+## ✨ Features  
 
-- Random Forest Regressor Model - Personal Customization
+- 💻 Predict laptop prices based on features like company, CPU, RAM, GPU, and more.  
+- 🔍 Experiment with multiple regression models for optimal results.  
+- 🌍 Supports **currency conversion** from INR to USD.  
+- 📈 Evaluate models using key metrics: **R² Score** and **Mean Absolute Error (MAE)**.  
 
-```
-R2 Score: 88.78 %
-Mean Absolute Error: 15.94 %
-```
-- Voting Regressor Model (Rf+Gradient) - Personal Customization
+## 📊 Dataset Details  
 
-```
-R2 Score: 0.89 ( 89.27 %)
-Mean Absolute Error: 0.15 ( 15.37 %)
-```
-</details>
+The dataset includes **1302 laptops** with 12 attributes, sourced from Amazon (2017-2018).  
 
-<details>
-<summary style="font-size: 20px;">Price Currency Conversion [Optional]</summary>
-This line of code indicates currency conversion of laptop prices from INR to USD (1 Indian Rupee = 0.012 US Dollar). You can customize the currency exchange rate that suits your need.
-<br><br>
-  
-```
-st.title(f"\nPrice: {round(predicted_price * 0.012, 2)} USD")
-```
-</details>
+| **Attribute**         | **Description**                             |  
+|------------------------|---------------------------------------------|  
+| **Company Name**       | Laptop brand (e.g., Dell, HP, Apple)        |  
+| **Type Name**          | Form factor (e.g., Ultrabook, Gaming)       |  
+| **Laptop Size**        | Screen size (in inches)                     |  
+| **Screen Resolution**  | Display resolution (e.g., 1920x1080)        |  
+| **CPU**                | Processor type                              |  
+| **RAM**                | Memory capacity (GB)                        |  
+| **Memory**             | Storage capacity (HDD/SSD)                 |  
+| **GPU**                | Graphics card details                      |  
+| **Operating System**   | OS type (e.g., Windows, macOS)             |  
+| **Price (INR)**        | Price in Indian Rupees                     |  
 
-<details>
-<summary style="font-size: 20px;">Run <i>app.py</i></summary>
-To run the app.py, load the dependecies requirements and use the following command:
-<br><br>
-  
-```
-streamlit run app.py
-```
-✨ Enjoy the demo
-</details>
+---
 
-<hr>
-<footer>
-  Feel free to send issues if you face any problem. </br>
-  ✨ Don't forget to star the repo :)
-</footer>
+## 🤖 Regressor Models  
+
+| **Model**                  | **Description**                     |  
+|----------------------------|-------------------------------------|  
+| Multiple Linear Regression | Basic regression model             |  
+| Ridge Regression           | Regularized linear regression      |  
+| Lasso Regression           | Sparse regression                  |  
+| k-Nearest Neighbors (k-NN) | Distance-based prediction          |  
+| Decision Tree              | Tree-based regression model        |  
+| Support Vector Machine     | Kernel-based regression            |  
+| Random Forest              | Ensemble tree model                |  
+| Extra Trees                | Advanced ensemble model            |  
+| Adaptive Boost (AdaBoost)  | Boosting-based ensemble            |  
+| Gradient Boost             | Gradient-based optimization        |  
+| XGBoost                    | Highly efficient boosting          |  
+| Voting Regressor           | Combines multiple models           |  
+| Stacking Regressor         | Model stacking for better accuracy |  
+
+## 🌟 Selected Models  
+
+### 1. **Random Forest Regressor**  
+   - **R² Score**: **88.78%**  
+   - **Mean Absolute Error**: **15.94%**  
+
+### 2. **Voting Regressor** *(Random Forest + Gradient Boost)*  
+   - **R² Score**: **89.27%**  
+   - **Mean Absolute Error**: **15.37%**  
+
+## 💵 Price Currency Conversion  
+
+This project supports **price conversion** from INR to USD.  
+Default exchange rate: **1 INR = 0.012 USD**  
+
+```python  
+st.title(f"\nPrice: {round(predicted_price * 0.012, 2)} USD")  
+```  
+The exchange rate can be easily updated as needed.  
+
+## 🖥️ Running the Application  
+
+1. Install required dependencies:  
+   ```bash  
+   pip install -r requirements.txt  
+   ```  
+
+2. Launch the Streamlit application:  
+   ```bash  
+   streamlit run app.py  
+   ```  
+
+## 📈 Metrics  
+
+The performance of each regression model is evaluated using:  
+- **R² Score**: Measures the variance explained by the model.  
+- **Mean Absolute Error (MAE)**: Captures the average prediction error.  
+
+## 💡 Future Enhancements  
+
+- Integration with **live datasets** for real-time predictions.  
+- Incorporating **deep learning models** for improved accuracy.  
+- Adding support for additional **currency conversions** and **visualization dashboards**.  
+
+## 🌟 Contribution  
+
+💡 **Ideas?** Contributions are always welcome! Submit issues, pull requests, or share your feedback to help improve this project.  
+
+⭐ If you found this project useful, don't forget to **star the repository**! 😊
+
+<br />
+
+**Made with ❤️ by **Sarthak Sachdev** for machine learning enthusiasts**
+
+### Follow for more😁✌🏻
